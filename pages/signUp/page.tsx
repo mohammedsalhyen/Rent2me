@@ -31,36 +31,29 @@ const page = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const formData = {
-            NationalID: nationalID,
-            Name: name,
-            Address: address,
-            Phone: phone,
-            Mail: mail,
-            Password: password,
-            ConfirmPassword: confirmPassword,
-
-        };
+        
+        const formData = new FormData();
+        formData.append('NationalID', nationalID);
+        formData.append('Name', name);
+        formData.append('Address', address);
+        formData.append('Phone', phone);
+        formData.append('Mail', mail);
+        formData.append('Password', password);
+        formData.append('ConfirmPassword', confirmPassword);
+    
         try {
-            console.log(formData);
-            const response = await fetch('ftp://rent2me.somee.com/api/Register/register', {
+            const response = await fetch('http://rent2me.runasp.net/api/Register/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             });
-
+            
             if (response.ok) {
                 const responseData = await response.json();
                 console.log('Register successful:', responseData);
-                console.log(formData);
-                alert("true")
-            }
-            else {
+                alert("true");
+            } else {
                 console.error('Register failed:', response.statusText);
-                console.log(formData);
-                alert("false")
+                alert("false");
                 if (response.status === 400) {
                     console.error('Bad request');
                 } else if (response.status === 401) {
@@ -69,7 +62,6 @@ const page = () => {
                     console.error('Unexpected error');
                 }
             }
-            console.log(response);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -86,14 +78,12 @@ const page = () => {
                     >
                         Go Now
                     </Link>
-
                 </div>
                 <div data-aos="fade-left" data-aos-delay="1100" className=' flex flex-col justify-center px-8'>
                     <p className='text-[32px] mb-8 font-bold text-black'>Welcome to Rent2Me</p>
                     <form onSubmit={handleSubmit} className='grid xs:grid-cols-1 md:grid-cols-2 gap-5'>
                         <div className=" flex   mb-3 items-center border-[1px] rounded-3xl border-[#DDD] gap-1 p-3 text-[#a9a9a9]">
                             <FaUser />
-
                             <input
                                 id="ssn-signUp"
                                 type="number"
@@ -105,7 +95,6 @@ const page = () => {
                                 required
                                 className='text-black focus:outline-none w-full bg-inherit'
                             />
-
                         </div>
                         <div className=" flex   mb-3 items-center border-[1px] rounded-3xl border-[#DDD] gap-1 p-3 text-[#a9a9a9]">
                             <MdDriveFileRenameOutline />
