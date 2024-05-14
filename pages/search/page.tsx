@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { searchQuery } from '@/utils/data'
-import { client } from '@/lib/client'
 import Car from '@/components/Car'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'

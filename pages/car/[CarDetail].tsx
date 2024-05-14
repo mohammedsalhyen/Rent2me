@@ -1,10 +1,7 @@
-import Footer from '@/components/Footer';
+
 import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { useStateContext, IStateContext } from '@/context/StateContext';
-import { urlFor } from '@/lib/client';
-import { Contract } from 'ethers';
-import { FaTimesCircle, FaPlaceOfWorship, FaImage } from "react-icons/fa"
 import React, { useEffect, useState } from 'react'
 import RequestForm from '@/components/RequestForm';
 import AOS from "aos"

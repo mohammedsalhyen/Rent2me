@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import AOS from "aos"
-import { FaTimesCircle, FaPlaceOfWorship, FaImage } from 'react-icons/fa';
+import { FaImage } from 'react-icons/fa';
 import { MdCancel } from "react-icons/md";
 const EditUser = ({ user, setEditClicked }: any) => {
     const [propertyName, setPropertyName] = useState("");

@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { CiWallet ,CiDeliveryTruck } from "react-icons/ci";
-import { MdOutlinePayment } from "react-icons/md";
-import { FaCar, FaSearch } from "react-icons/fa";
-import { RiTimerFlashLine } from "react-icons/ri";
+import {  FaSearch } from "react-icons/fa";
 import Navbar from './Navbar';
 const Landing = () => {
     const router = useRouter();

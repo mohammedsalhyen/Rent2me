@@ -10,7 +10,6 @@ import Landing from './Landing'
 import Subscription from './Subscription'
 import Tip from './Tip'
 import Cart from './Cart'
-import ContarctUi from './CotractUi'
 import {IStateContext, useStateContext } from '@/context/StateContext'
 
 const Home = () => {
@@ -39,7 +38,6 @@ const Home = () => {
                 <Contact />
                 <Tip />
                 <Footer />
-                <ContarctUi/>
             </div>
             <Cart/>
         </div>

@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Car from './Car';
-import Loading from './Loading';
 
 const FeatureCar = () => {
     const [cars, setCars] = useState([]);

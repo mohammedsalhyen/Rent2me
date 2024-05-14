@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link';
 import { FaUser, FaHeart } from 'react-icons/fa';
 import { FaCar } from "react-icons/fa";
 import { FaMicrochip } from "react-icons/fa6";

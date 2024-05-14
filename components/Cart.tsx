@@ -1,7 +1,5 @@
 import { IoMdExit } from "react-icons/io";
 import getStripe from '../lib/getStripe';
-import { planQuery } from "@/utils/data";
-import { client } from "@/lib/client";
 import { useStateContext, IStateContext } from "@/context/StateContext";
 const Cart = () => {
     const { user, showCart, plan, setShowCart } = useStateContext() as IStateContext;

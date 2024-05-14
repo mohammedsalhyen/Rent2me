@@ -1,58 +1,5 @@
-import { client } from "@/lib/client";
+
 import confetti from 'canvas-confetti';
-export async function fetchCar() {
-    const query = '*[_type == "car"]';
-    const data = await client.fetch(query);
-    return data;
-}
-export async function fetchPlan() {
-    const query = '*[_type == "plan"]';
-    const data = await client.fetch(query);
-    return data;
-}
-
-export const userQuery = (userId) => {
-    const query = `*[_type == "user" && _id == '${userId}']`;
-    return query;
-};
-export const planQuery = (planPrice) => {
-    const query = `*[_type == "plan" && price == '${planPrice}']`;
-    return query;
-};
-
-export const searchQuery = (searchTerm) => {
-    const query = `*[_type == "car" && carModel match '${searchTerm}*' || carBrand match '${searchTerm}*' || color match '${searchTerm}*']{
-          image{
-            asset->{
-              url
-            }
-          },
-            _id,
-            carModel,
-            year,
-            seatNum,
-            carType,
-            mileage,
-            fuelType,
-            rentingPrice,
-            postedBy->{
-                _id,
-                userName,
-                image
-              },
-            }`;
-    return query;
-};
-
-
-
-
-
-
-
-
-
-
 //Fire **************
 
 
