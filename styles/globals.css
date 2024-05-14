@@ -38,7 +38,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  color:#FFF;
 }
 
 ul {
@@ -81,6 +80,7 @@ body {
 .navbar-links.active{
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   position: absolute;
   top:100%;
   left: 0;
@@ -101,7 +101,7 @@ body {
   }
 }
 .landing {
-  background-image: url("../public/asset/2.png");
+  background-image: url("../public/asset/2.jpg");
   background-size: cover;
 }
 

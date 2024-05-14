@@ -1,22 +1,31 @@
-"use client"
-import { urlFor } from '@/lib/client';
-import { fetchCar } from '@/utils/data';
-import Image from 'next/image';
-import Link from 'next/link';
-import { FaArrowRight, FaUser ,FaHeart} from 'react-icons/fa';
+
 import React, { useEffect, useState } from 'react'
 import Car from './Car';
+import Loading from './Loading';
 
 const FeatureCar = () => {
     const [cars, setCars] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const carsData = await fetchCar();
-            setCars(carsData);
+        const fetchCar = async () => {
+            try {
+                const response = await fetch('http://rent2me.runasp.net/api/Car/DisplayAllCars');
+
+                
+                    const data = await response.json();
+                    setCars(data)
+                    console.log(cars)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                
+            }
         };
-        fetchData();
+
+        fetchCar();
+        console.log(cars)
+
     }, []);
+    console.log(cars)
     return (
         <div className="bg-[var(--dark-gray-color)] main-prop padding-container">
             <div className="max-container" id='car-gallery'>
@@ -25,7 +34,7 @@ const FeatureCar = () => {
                     <span> Your amazing Car find it here</span>
                 </div>
                 <div className=" grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {cars.map((car:any, index:number) => (
+                    {cars.map((car: any, index: number) => (
                         <Car car={car} key={index} />
                     ))}
                 </div>

@@ -9,14 +9,42 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 const page = () => {
     const searchParams = useSearchParams()
-    const search = searchParams.get('input')
+    const brand = searchParams.get('brand');
+    const color = searchParams.get('color');
+    const year = searchParams.get('year');
+    const model = searchParams.get('model');
     const [cars, setCars] = useState([]);
     useEffect(() => {
-        const query = searchQuery(search);
-        client.fetch(query).then((data) => {
-            setCars(data);
-        });
-    }, [search]);
+
+        const fetchData = async () => {
+            try {
+                const requestBody = {
+                    "Brand":brand,
+                    "Color":color,
+                    "Year":year,
+                    "Model":model,
+                };
+                const response = await fetch('http://rent2me.runasp.net/api/Car/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setCars(data);
+                    console.log(data)
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [brand, color, year, model]); 
+
     return (
         <div>
             <div className=' search-bg  padding-container'>

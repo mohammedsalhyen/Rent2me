@@ -13,8 +13,9 @@ import { IWeb3Context, useWeb3Context } from "../context/Web3ContextProvider";
 import { MdCheck, MdError } from "react-icons/md";
 import { FaEthereum } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
-import useGreet from "../hooks/useGreeting";
 import Link from "next/link";
+import useGreeting from "../hooks/useGreeting";
+import useGreet from "@/hooks/useGreet";
 
 const BSCTChainID = 97;
 
@@ -25,7 +26,7 @@ export default function Home() {
         state: { isAuthenticated, address, currentChain },
     } = useWeb3Context() as IWeb3Context;
 
-    const { lastGreeter, lastMessage } = useGreet();
+    const { lastGreeter, lastMessage } = useGreeting();
     const { greet, loading } = useGreet();
 
     const [newMessage, setNewMessage] = useState<string>("");

@@ -1,17 +1,29 @@
-"use client"
-import { fetchCar, fetchPlan } from '@/utils/data';
-import Link from 'next/link';
+
+import { useStateContext, IStateContext } from '@/context/StateContext';
 import React, { useEffect, useState } from 'react'
 
-const Subscription = ({ user, setShowCart, setPlan }: any) => {
+const Subscription = () => {
+    const { user, setShowCart, setPlan } = useStateContext() as IStateContext;
     const [plans, setPlans] = useState([]);
     useEffect(() => {
-        const fetchData = async () => {
-            const plansData = await fetchPlan();
-            setPlans(plansData);
+        const fetchSubscriptionPlans = async () => {
+            try {
+                const response = await fetch('http://rent2me.runasp.net/api/Subscription/subscription-plans');
+                if (response.ok) {
+                    const data = await response.json();
+                    setPlans(data);
+                } else {
+                    console.error('Failed to fetch subscription plans:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching subscription plans:', error);
+            }
         };
-        fetchData();
+
+        fetchSubscriptionPlans();
+
     }, []);
+
     return (
         <div className=" bg-[var(--dark-gray-color)] main-prop" id='Plans'>
             <div className="max-container padding-container">
@@ -27,16 +39,20 @@ const Subscription = ({ user, setShowCart, setPlan }: any) => {
                             data-aos="fade-up" data-aos-delay={`${index + 2}00`}
                         >
                             <div className="head border-b-[1px] border-[var(--med-gray-color)] pb-3 ">
-                                <h3 className='text-3xl mb-3'>{plan.name}</h3>
-                                <span >{plan.price} $</span>
+                                <h3 className='text-3xl text-white mb-3'>{plan.name}</h3>
+                                <span className='text-white'>{plan.price} </span>
                             </div>
-                            <p className='plan-description py-5 font-bold'>{plan.description}</p>
-                            <p className=' text-[var(--white-gray-color)] mb-10 '>{plan.features}</p>
+                            <p className='plan-description text-white  py-5 font-bold'>{plan.description}</p>
+                            <p className=' text-[var(--white-gray-color)] mb-10 '> The number of process is  {plan.numOfProcesses}</p>
                             <div className="foot">
-                                <div className='  justify-self-end py-3 px-6 border-[1px] border-[var(--orange-color)] '>
+                                <div className='  justify-self-end py-3 px-6 border-[1px] text-[var(--orange-color)] border-[var(--orange-color)] '>
                                     {
                                         user ? (
-                                            <button className='w-full h-full' type='button' onClick={() => {setShowCart(true);setPlan(plan.price)}}>
+                                            <button className='w-full h-full' type='button' onClick={() => {
+                                                localStorage.setItem("plan", JSON.stringify(plan));
+                                                setPlan(plan)
+                                                setShowCart(true)
+                                            }}>
                                                 Buy Now
                                             </button>
                                         ) : (

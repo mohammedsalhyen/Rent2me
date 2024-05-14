@@ -9,6 +9,11 @@ export interface IWeb3State {
     provider: BrowserProvider | null;
     isAuthenticated: boolean;
 }
+declare global {
+    interface Window {
+        ethereum?: any; // Define ethereum property on window
+    }
+}
 
 const useWeb3Provider = () => {
     const initialWeb3State = {
@@ -26,7 +31,7 @@ const useWeb3Provider = () => {
         if (state.isAuthenticated) return;
 
         try {
-            const { ethereum }= window;
+            const { ethereum }:any= window;
 
             if (!ethereum) {
                 return toast({
@@ -71,6 +76,7 @@ const useWeb3Provider = () => {
         }
     }, [connectWallet, state.isAuthenticated]);
 
+    
     useEffect(() => {
         if (typeof window.ethereum === "undefined") return;
 

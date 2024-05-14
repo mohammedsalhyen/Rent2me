@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FaUser } from "react-icons/fa"
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import { navItems } from "../Constant/index";
-import AOS from  "aos"
+import AOS from "aos"
 
 const Navbar = ({ open, setOpen }: any) => {
     const [user, setUser] = useState('');
@@ -12,10 +12,10 @@ const Navbar = ({ open, setOpen }: any) => {
     useEffect(() => {
         AOS.init({
             easing: 'ease-in-out',
-            duration: 1000, 
-            delay: 200 
+            duration: 1000,
+            delay: 200
         });
-        
+
 
         // Function to get data from local storage
         const getDataFromLocalStorage = () => {
@@ -50,21 +50,20 @@ const Navbar = ({ open, setOpen }: any) => {
                             ))}
                         </ul>
                         {user ? (
-                            <Link href="/profile/page ">
+                            <Link className=' cursor-pointer' href="/profile/page ">
                                 <FaUser />
                             </Link>
                         ) : (
                             <div className={`flex gap-5`}>
-                                <Link className="px-6 py-3 text-white bg-[var(--orange-color)] rounded-xl" href="/login/page">
+                                <Link className="px-6 cursor-pointer py-3 text-white bg-[var(--orange-color)] rounded-xl" href="/login/page">
                                     Log in
                                 </Link>
-                                <Link className="px-6 py-3 text-white bg-[var(--orange-color)] rounded-xl" href="/signUp/page">
+                                <Link className="px-6 cursor-pointer py-3 text-white bg-[var(--orange-color)] rounded-xl" href="/signUp/page">
                                     Sign Up
                                 </Link>
                             </div>
                         )}
                     </div>
-
                     <button onClick={() => handleOpen()} type='button' title='button' className={`xl:hidden text-[24px] px-3 py-3 text-white bg-[var(--orange-color)] transition-all rounded-xl ${open ? "hidden " : "block"}`}><IoMdMenu /></button>
                     <button onClick={() => handleClose()} type='button' title='button' className={`xl:hidden text-[24px] px-3 py-3 text-white bg-[var(--orange-color)] rounded-xl transition-all ${open ? "block" : "hidden"}`}><IoMdClose /></button>
                 </nav>

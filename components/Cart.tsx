@@ -1,20 +1,13 @@
-
 import { IoMdExit } from "react-icons/io";
 import getStripe from '../lib/getStripe';
 import { planQuery } from "@/utils/data";
 import { client } from "@/lib/client";
-const Cart = ({ user, showCart, plan, setShowCart }: any) => {
-    
+import { useStateContext, IStateContext } from "@/context/StateContext";
+const Cart = () => {
+    const { user, showCart, plan, setShowCart } = useStateContext() as IStateContext;
     const handleCheckout = async () => {
-        let planData:any=[]
-        const query = planQuery(plan);
-        const data1 = await client.fetch(query)
-        .then((dataArray) => {
-            planData [0] = dataArray[0];
-        })
+        const planData=[plan]
         const stripe = await getStripe();
-        console.log(planData);
-        console.log(JSON.stringify(planData));
         const response = await fetch('/api/route', {
             method: 'POST',
             headers: {
@@ -22,9 +15,11 @@ const Cart = ({ user, showCart, plan, setShowCart }: any) => {
             },
             body: JSON.stringify(planData),
         });
+        console.log(plan)
         const data = await response.json();
         stripe.redirectToCheckout({ sessionId: data.id });
     }
+    
     return (
         <div>
             {showCart &&
@@ -49,12 +44,12 @@ const Cart = ({ user, showCart, plan, setShowCart }: any) => {
                         </div>
                         <div className='flex justify-between items-center '>
                             <p className='text-[var(--blue-color)] text-xl font-bold'>you will join with:</p>
-                            <p className='text-[var(--blue-color)] text-xl font-bold'>{plan == "50" ? "Light" : plan == "100" ? "Super" : "Altra"}</p>
+                            <p className='text-[var(--blue-color)] text-xl font-bold'>{plan.price == "50" ? "Light" : plan == "100" ? "Super" : "Altra"}</p>
                         </div>
                         <div className=' absolute bottom-3 w-full px-10' >
                             <div className='flex justify-between items-center '>
                                 <p className='text-[var(--blue-color)] text-xl font-bold'>Total amount</p>
-                                <p className='text-[var(--blue-color)] text-xl font-bold'>{plan} $</p>
+                                <p className='text-[var(--blue-color)] text-xl font-bold'>{plan.price}$</p>
                             </div>
                             <button
                                 type="button"

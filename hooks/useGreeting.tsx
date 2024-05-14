@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGreetingContract from "./useGreetingContract";
 
-const useGreet = () => {
+const useGreeting = () => {
   const contract = useGreetingContract();
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [lastGreeter, setLastGreeter] = useState<string | null>(null);
@@ -39,4 +39,4 @@ const useGreet = () => {
   return { lastMessage, lastGreeter };
 };
 
-export default useGreet;
+export default useGreeting;

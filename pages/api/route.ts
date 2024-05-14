@@ -1,17 +1,15 @@
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
-  apiVersion: '2020-08-27', // Specify the Stripe API version
-});
-
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY as string);
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
     try {
-      const params = {
+      const params:any = {
         submit_type: 'pay',
         mode: 'payment',
         payment_method_types: ['card'],
@@ -20,7 +18,6 @@ export default async function handler(
           { shipping_rate: 'shr_1OrdpQLCuI5UW9PgXXmllQmx' },
         ],
         line_items: req.body.map((item: any) => {
-          
           return {
             price_data: {
               currency: 'usd',
@@ -42,9 +39,9 @@ export default async function handler(
 
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create(params);
-
+      
       res.status(200).json(session);
-    } catch (err) {
+    } catch (err:any) {
       res.status(err.statusCode || 500).json(err.message);
     }
   } else {
@@ -52,3 +49,4 @@ export default async function handler(
     res.status(405).end('Method Not Allowed');
   }
 }
+

@@ -9,7 +9,7 @@ const Tip = () => {
                     {tips.map((tip, index) => (
                         <li data-aos="zoom-in-up" data-aos-delay={`${index+1}00`} className=' p-5 rounded-lg bg-[#0e0e0e] flex flex-col flex-center' key={index}>
                             <p className=' text-[40px]  p-5 text-orange-500 font-extrabold'>{tip.icon}</p>
-                            <h3 className=' font-bold py-3 text-xl'>{tip.name}</h3>
+                            <h3 className=' font-bold  text-white py-3 text-xl'>{tip.name}</h3>
                             <p className=' text-[#838383] text-center mb-6'>{tip.desc}</p>
                             <Link href={`${tip.href}` } className='text-[var(--orange-color)]'>{tip.link}</Link>
                         </li>

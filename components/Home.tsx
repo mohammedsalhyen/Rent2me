@@ -11,31 +11,28 @@ import Subscription from './Subscription'
 import Tip from './Tip'
 import Cart from './Cart'
 import ContarctUi from './CotractUi'
+import {IStateContext, useStateContext } from '@/context/StateContext'
 
 const Home = () => {
-    const [user, setUser] = useState('');
-    const [showCart, setShowCart] = useState(false);
-    const [plan, setPlan] = useState();
+    const { user, setUser} = useStateContext() as IStateContext;
     useEffect(() => {
         // Function to get data from local storage
         const getDataFromLocalStorage = () => {
             const userJson = localStorage.getItem('user');
-            if (userJson !== null) {
+            if ( !user &&userJson !== null) {
                 const localStorageData = JSON.parse(userJson);
                 setUser(localStorageData);
             }
         }
         getDataFromLocalStorage();
-        console.log(user);
-        return () => {
-        };
     }, []);
+
     return (
         <div>
             <div className=' relative' >
                 <Landing />
                 <Ad />
-                <Subscription user={user} setShowCart={setShowCart} setPlan={setPlan} />
+                <Subscription  />
                 <About />
                 <Ad2 />
                 <FeatureCar />
@@ -44,7 +41,7 @@ const Home = () => {
                 <Footer />
                 <ContarctUi/>
             </div>
-            <Cart user={user} showCart={showCart} setShowCart={setShowCart} plan={plan}/>
+            <Cart/>
         </div>
     )
 }

@@ -3,20 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { FaLock, FaUser, FaPhone, FaImage, FaAddressBook } from "react-icons/fa";
 import { MdDriveFileRenameOutline, MdEmail } from "react-icons/md";
 import AOS from "aos"
-import { client } from '@/lib/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 const page = () => {
-    const router = useRouter();
-    const [nationalID, setNationalID] = useState('');
-    const [name, setName] = useState('');
-    const [mail, setMail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [password, setPassword] = useState('');
-    const [photo, setPhoto] = useState(null);
-    const [drivingLicense, setDrivingLicense] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState('');
+
+
     useEffect(() => {
         AOS.init({
             easing: 'ease-in-out',
@@ -24,36 +15,56 @@ const page = () => {
             delay: 200
         });
     }, []);
+
+    const router = useRouter();
+    const [nationalID, setNationalID] = useState('');
+    const [name, setName] = useState('');
+    const [mail, setMail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const [photo, setPhoto]:any = useState(null);
+    const [drivingLicense, setDrivingLicense] = useState(null);
+
+    const [confirmPassword, setConfirmPassword] = useState('');
     const handleSignUpChange = (setter: any) => (e: any) => {
         setter(e.target.value);
     };
-
+    const handleupload = (setter: any) => (e: any) => {
+        setter(e.target.files[0]);
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        
         const formData = new FormData();
         formData.append('NationalID', nationalID);
         formData.append('Name', name);
         formData.append('Address', address);
         formData.append('Phone', phone);
+        formData.append('image', photo);
         formData.append('Mail', mail);
         formData.append('Password', password);
         formData.append('ConfirmPassword', confirmPassword);
-    
+        
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
         try {
             const response = await fetch('http://rent2me.runasp.net/api/Register/register', {
                 method: 'POST',
                 body: formData,
             });
-            
+
             if (response.ok) {
                 const responseData = await response.json();
                 console.log('Register successful:', responseData);
-                alert("true");
+                router.push("/login/page")
+                
             } else {
                 console.error('Register failed:', response.statusText);
                 alert("false");
+                console.log(formData)
                 if (response.status === 400) {
                     console.error('Bad request');
                 } else if (response.status === 401) {
@@ -66,7 +77,6 @@ const page = () => {
             console.error('Error:', error);
         }
     };
-
     return (
         <div className='bg-[var(--blue-color)] flex-center xs:h-full  md:h-[100vh] overflow-hidden'>
             <div className='flex h-[90%] w-[80%] bg-white rounded-xl overflow-hidden '>
@@ -179,11 +189,9 @@ const page = () => {
                                 name="Photo"
                                 multiple
                                 accept="image/*"
-                                onChange={(e) => setPhoto(e.target.files[0])}
-                                
+                                onChange={handleupload(setPhoto)}
                                 className=' opacity-0'
                             />
-
                         </div>
                         <div className=" flex   mb-3 items-center border-[1px] rounded-3xl border-[#DDD] gap-1 p-3 text-[#a9a9a9]">
                             <FaImage className=' text-xl' />
@@ -194,11 +202,8 @@ const page = () => {
                                 name="Photo"
                                 multiple
                                 accept="image/*"
-                                onChange={(e) => setDrivingLicense(e.target.files[0])}
-                                
                                 className=' opacity-0'
                             />
-
                         </div>
                         <input type="submit"
                             value={"Sign Up"}
@@ -213,3 +218,4 @@ const page = () => {
 }
 
 export default page
+

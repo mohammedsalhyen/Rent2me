@@ -2,123 +2,125 @@
 import React, { useEffect, useState } from 'react'
 import { GrLicense } from "react-icons/gr";
 import { TbBrandElectronicArts } from "react-icons/tb";
-import { IoLogoModelS ,IoMdTime,IoIosColorPalette } from "react-icons/io";
+import { IoLogoModelS, IoMdTime, IoIosColorPalette } from "react-icons/io";
 import { VscTypeHierarchySub } from "react-icons/vsc";
-import {MdOutlineAirlineSeatReclineExtra, MdOutlinePriceCheck } from "react-icons/md"
+import { MdOutlineAirlineSeatReclineExtra, MdOutlinePriceCheck } from "react-icons/md"
 import { RiPinDistanceFill } from "react-icons/ri";
 import { BsFillFuelPumpFill } from "react-icons/bs";
 import { FaImage } from "react-icons/fa";
 import AOS from "aos"
-import { userQuery } from '@/utils/data';
-import { client } from '@/lib/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useStateContext, IStateContext } from '@/context/StateContext';
 const page = () => {
-    // State to manage form data
     const router = useRouter();
-    const [user, setUser] = useState('');
-    const [licensePlate, setLicensePlate] = useState('');
-    const [carBrand, setCarBrand] = useState('');
-    const [carModel, setCarModel] = useState('');
-    const [carType, setCarType] = useState('');
-    const [year, setYear] = useState('');
-    const [color, setColor] = useState('');
-    const [seatNum, setSeatNum] = useState('');
-    const [mileage, setMileage] = useState('');
-    const [rentingPrice, setRentingPrice] = useState('');
-    const [fuelType, setFuelType] = useState('');
-    const [imageAsset, setImageAsset] = useState();
-    const [propertyDeed, setPropertyDeed] = useState();
+    const { user, setUser } = useStateContext() as IStateContext;
+    // State to manage form data
+    const [licensePlate, setLicensePlate] = useState("");
+    const [carBrand, setCarBrand] = useState("");
+    const [carModel, setCarModel] = useState("");
+    const [carType, setCarType] = useState("");
+    const [year, setYear] = useState("");
+    const [color, setColor] = useState("");
+    const [seatNum, setSeatNum] = useState("");
+    const [mileage, setMileage] = useState("");
+    const [deposite, setDeposite] = useState("");
+    const [rentingPrice, setRentingPrice] = useState("");
+    const [image, setImage]:any = useState(null);
+    const [propertyDeed, setPropertyDeed]:any = useState(null);
     useEffect(() => {
-
+        // Function to get data from local storage
+        const getDataFromLocalStorage = () => {
+            const userJson = localStorage.getItem('user');
+            if (userJson !== null) {
+                const localStorageData = JSON.parse(userJson);
+                if (localStorageData.hasOwnProperty('nationalID')) {
+                    setUser(localStorageData);
+                } else {
+                    console.error('User data in local storage is missing the nationalid property.');
+                }
+            } else {
+                console.error('User data not found in local storage.');
+            }
+        }
+        getDataFromLocalStorage();
 
         AOS.init({
             easing: 'ease-in-out',
             duration: 1000,
             delay: 200
         });
-        // Function to get data from local storage
-        const getDataFromLocalStorage = () => {
-            const userJson = localStorage.getItem('user')
-            const localStorageData = JSON.parse(userJson);
-            if (localStorageData) {
-                setUser(localStorageData);
-            }
-        }
-        getDataFromLocalStorage();
-        console.log(user);
-        return () => {
-        };
     }, []);
+
     const handleInputChange = (setter: any) => (e: any) => {
         setter(e.target.value);
     };
 
-    const handleFileChange = (setter: any) => (e: any) => {
+
+
+    const onFileChange = (setter: any) => (e: any) => {
         setter(e.target.files[0]);
     };
-    const uploadImage = (e) => {
-        const selectedFile = e.target.files[0];
-        if (selectedFile) {
-            client.assets
-                .upload('image', selectedFile, { contentType: selectedFile.type, filename: selectedFile.name })
-                .then((document) => setImageAsset(document))
-        }
-    }
-    const uploadPropertyDeed = (e) => {
-        const selectedFile = e.target.files[0];
-        if (selectedFile) {
-            client.assets
-                .upload('image', selectedFile, { contentType: selectedFile.type, filename: selectedFile.name })
-                .then((document) => setPropertyDeed(document))
-        }
-    }
+
+
+
+
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if (licensePlate && user._id && carBrand && carModel && carType && year && color && seatNum && mileage && rentingPrice && fuelType && imageAsset?._id) {
-            const doc = {
-                _type: "car",
-                licensePlate: licensePlate,
-                carBrand: carBrand,
-                carModel: carModel,
-                carType: carType,
-                year: year,
-                color: color,
-                seatNum: seatNum,
-                mileage: mileage,
-                rentingPrice: rentingPrice,
-                fuelType: fuelType,
-                userId: user._id,
-                postedBy: {
-                    _type: 'postedBy',
-                    _ref: user._id,
-                },
-                image: {
-                    _type: 'image',
-                    asset: {
-                        _type: 'reference',
-                        _ref: imageAsset?._id
-                    }
-                },
-                propertyDeed: {
-                    _type: 'image',
-                    asset: {
-                        _type: 'reference',
-                        _ref: propertyDeed?._id
-                    }
+
+        const formData = new FormData();
+        formData.append('LicencePlate', licensePlate);
+        formData.append('CarType', carType);
+        formData.append('Brand', carBrand);
+        formData.append('Color', color);
+        formData.append('CurrentMileage', mileage);
+        formData.append('Year', year);
+        formData.append('Model', carModel);
+        formData.append('Image', image);
+        formData.append('SeatingCapacity', seatNum);
+        formData.append('RentingPrice', rentingPrice);
+        formData.append('Deposite', deposite);
+        formData.append('PropertyDeed', propertyDeed);
+        formData.append('UserrID', user.nationalID);
+        
+
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        try {
+            const response = await fetch('http://rent2me.runasp.net/api/Car/AddCar' , {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Added successful:', responseData);
+                router.push("/");
+            } else {
+                const responseData = await response.json();
+                console.log('Added failed:', responseData);
+                console.error('Adding is failed:', response.statusText);
+                alert("false");
+                
+                if (response.status === 400) {
+                    console.error('Bad request');
+                } else if (response.status === 401) {
+                    console.error('Unauthorized');
+                } else {
+                    console.error('Unexpected error');
                 }
             }
-            client.create(doc)
-                .then((result) => {
-                    router.push("/")
-                })
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
+
 
     return (
         <div className=' bg-[var(--blue-color)] flex-center xs:h-full  md:h-[100vh] overflow-hidden'>
             <div className='flex h-[90%] w-[80%] bg-white rounded-xl overflow-hidden '>
-                <div className=" xs:hidden sm:flex w-1/3 px-5 login-bg  flex-col justify-center text-start">
+                <div className=" xs:hidden sm:flex text-white w-1/3 px-5 login-bg  flex-col justify-center text-start">
                     <p data-aos="fade-in" className='text-[28px] font-bold'>Rent2Me</p>
                     <p data-aos="fade-in" data-aos-delay="800" className='text-xl py-5'>The most popular website to rent modern car</p>
                     <Link href={"/"} data-aos="fade-up" data-aos-delay="900" type='button' title='button'
@@ -133,7 +135,7 @@ const page = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="add-car grid xs:grid-cols-1 md:grid-cols-2 gap-5 text-[#a9a9a9]">
                             <div>
-                                <GrLicense/>
+                                <GrLicense />
                                 <input
                                     type="text"
                                     name="licensePlate"
@@ -144,7 +146,7 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                            <MdOutlinePriceCheck/>
+                                <MdOutlinePriceCheck />
                                 <input
                                     id="rentingPrice"
                                     type="text"
@@ -157,7 +159,7 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                                <VscTypeHierarchySub/>
+                                <VscTypeHierarchySub />
                                 <input
                                     id="carType"
                                     type="text"
@@ -169,7 +171,7 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                                <TbBrandElectronicArts/>
+                                <TbBrandElectronicArts />
                                 <select
                                     name="carBrand"
                                     id="brand"
@@ -202,7 +204,7 @@ const page = () => {
                                 </select>
                             </div>
                             <div>
-                            <IoLogoModelS/>
+                                <IoLogoModelS />
                                 <select
                                     name="carModel"
                                     id="model"
@@ -261,7 +263,7 @@ const page = () => {
                                 </select>
                             </div>
                             <div>
-                                <IoMdTime/>
+                                <IoMdTime />
                                 <input
                                     id="year"
                                     type="number"
@@ -274,7 +276,7 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                                <IoIosColorPalette/>
+                                <IoIosColorPalette />
                                 <input
                                     id="color"
                                     type="string"
@@ -287,7 +289,20 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                                <MdOutlineAirlineSeatReclineExtra/>
+                                <IoIosColorPalette />
+                                <input
+                                    id="deposite"
+                                    type="string"
+                                    name="deposite"
+                                    value={deposite}
+                                    className='text-black w-full focus:outline-none bg-inherit'
+                                    onChange={handleInputChange(setDeposite)}
+                                    placeholder="Enter Deposite"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <MdOutlineAirlineSeatReclineExtra />
                                 <input
                                     id="seat_num"
                                     type="number"
@@ -302,7 +317,7 @@ const page = () => {
                                 />
                             </div>
                             <div>
-                                <RiPinDistanceFill/>
+                                <RiPinDistanceFill />
                                 <input
                                     id="mileage"
                                     type="number"
@@ -311,25 +326,11 @@ const page = () => {
                                     onChange={handleInputChange(setMileage)}
                                     placeholder="Enter Distances traveled"
                                     step="0.01"
-                                    required
                                     className='text-black w-full focus:outline-none bg-inherit'
                                 />
                             </div>
-                            <div>
-                                <BsFillFuelPumpFill/>
-                                <select id="fuel-tp"
-                                    name="fuelType"
-                                    value={fuelType}
-                                    onChange={handleInputChange(setFuelType)}
-                                    className='text-black w-full focus:outline-none bg-inherit'
-                                    required>
-                                    <option value="petrol_95">petrol 95</option>
-                                    <option value="petrol_92">petrol 92</option>
-                                    <option value="petrol_80">petrol 80</option>
-                                </select>
-                            </div>
                             <div className='text-[#a9a9a9]'>
-                                <FaImage/>
+                                <FaImage />
                                 <label className='text-nowrap' htmlFor="uploadBtn_Photo">Upload Photos</label>
                                 <input
                                     type="file"
@@ -337,14 +338,14 @@ const page = () => {
                                     name="Photo"
                                     multiple
                                     accept="image/*"
-                                    onChange={uploadImage}
+                                    onChange={onFileChange(setImage)}
                                     required
                                     className=' opacity-0'
                                 />
-                                
+
                             </div>
                             <div className='text-[#a9a9a9]'>
-                            <FaImage/>
+                                <FaImage />
                                 <label className=' text-nowrap ' htmlFor="uploadBtn_Property">Upload Property Deed</label>
                                 <input
                                     type="file"
@@ -352,14 +353,14 @@ const page = () => {
                                     name="Photo"
                                     multiple
                                     accept="image/*"
-                                    onChange={uploadPropertyDeed}
+                                    onChange={onFileChange(setPropertyDeed)}
                                     required
                                     className=' opacity-0'
                                 />
                             </div>
-                            <input type="submit" 
-                        className=" w-full cursor-pointer  mb-3 flex-center bg-[var(--orange-color)]  border-[1px] rounded-3xl border-none gap-1 py-3 text-white"
-                        />
+                            <input type="submit"
+                                className=" w-full cursor-pointer  mb-3 flex-center bg-[var(--orange-color)]  border-[1px] rounded-3xl border-none gap-1 py-3 text-white"
+                            />
                         </div>
                     </form>
                 </div>
