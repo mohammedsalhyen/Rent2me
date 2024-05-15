@@ -11,6 +11,9 @@ import Notification1 from '@/components/Notification1';
 import UserReq from '@/components/UserReq';
 import Car from '@/components/Car';
 import EditUser from '@/components/EditUser';
+import Requester from '@/components/Requester';
+import RejectedRequest from '@/components/RejectedRequest';
+import AcceptedRequest from '@/components/AcceptedRequest';
 
 const fetchNotifications = async (userId: any) => {
     try {
@@ -70,7 +73,7 @@ const page = () => {
     const router = useRouter();
     const [showNotification, setShowNotification] = useState(false);
     const [editClicked, setEditClicked] = useState(false);
-    const [user, setUser]:any= useState();
+    const [user, setUser]: any = useState();
     const [photo, setPhoto] = useState(null);
     const NotificationRef: any = useRef(null);
     const [data, setData] = useState({ notifications: [], userImage: null, userCars: [] });
@@ -156,22 +159,10 @@ const page = () => {
                 <div className="content flex-center flex-col text-center">
                     <div className=' relative'>
                         <div className='w-[250px] relative  border-2 border-[var(--orange-color)] overflow-hidden rounded-full '>
-                        <img className='w-full h-full' src={data.userImage !== null ? data.userImage : "../"} id="Photo" alt='profile' />
-                    </div>
-                    <div className='opacity-0 absolute bottom-0 left-1/2 -translate-x-1/2 z-30'>
-                            <input
-                                type="file"
-                                id="uploadBtn_Photo"
-                                name="Photo"
-                                multiple
-                                accept="image/*"
-                                onChange={handleupload(setPhoto)}
-                                className=' opacity-0'
-                            />
-                            <FaCamera className=' opacity-100' />
+                            <img className='w-full h-full' src={data.userImage !== null ? data.userImage : "../"} id="Photo" alt='profile' />
                         </div>
                     </div>
-                    
+
                     <div className="details">
                         <section className="name">
                             <div className=" text-[34px] font-bold text-[var(--blue-color)]">{user?.name}</div>
@@ -187,7 +178,7 @@ const page = () => {
                     </div>
                     <div className='text-white mt-5 mb-14 bg-[var(--orange-color)] rounded-3xl py-3  px-6 border-none flex-center gap-2 '>
                         <FaUserEdit />
-                        <button onClick={()=>setEditClicked(true)}>Edit</button>
+                        <button onClick={() => setEditClicked(true)}>Edit</button>
                     </div>
                 </div>
                 <div className='main prop '>
@@ -206,18 +197,23 @@ const page = () => {
                         <Link href="/addCar/page" className='bg-[var(--blue-color)] text-xl text-white py-3 px-10 rounded-3xl '>Add Car</Link>
                     </div>
                 </div>
-
+                <div className='main prop '>
+                    <AcceptedRequest user={user} />
+                </div>
+                <div className='main prop '>
+                    <RejectedRequest user={user} />
+                </div>
                 {
                     showNotification && <div ref={NotificationRef}> <Notification1 notifications={data.notifications} /></div>
                 }
             </div>
             {editClicked &&
-                    <div data-aos="zoom-in" className='bg-[#000000ad] absolute top-0 left-0 w-full h-full z-30 '>
-                        <div  className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
-                            <EditUser user={user}  setEditClicked={setEditClicked} />
-                        </div>
+                <div data-aos="zoom-in" className='bg-[#000000ad] absolute top-0 left-0 w-full h-full z-30 '>
+                    <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
+                        <EditUser user={user} setEditClicked={setEditClicked} />
                     </div>
-                }
+                </div>
+            }
         </div>
     )
 }

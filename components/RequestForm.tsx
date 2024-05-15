@@ -42,7 +42,7 @@ const RequestForm = ({user, carDetail,setRentClicked}:any) => {
         }
 
         try {
-            const response = await fetch('http://rent2me.runasp.net/api/RentalRequest', {
+            const response = await fetch('http://rent2me.runasp.net/api/RentalRequest/request', {
                 method: 'POST',
                 body: formData,
             });
