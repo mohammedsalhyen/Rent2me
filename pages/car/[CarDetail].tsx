@@ -5,10 +5,10 @@ import { useStateContext, IStateContext } from '@/context/StateContext';
 import React, { useEffect, useState } from 'react'
 import RequestForm from '@/components/RequestForm';
 import AOS from "aos"
+import { useRouter } from 'next/router';
 const CarDetail = () => {
     const [carImage, setCarImage] = useState(null);
     const [rentClicked, setRentClicked] = useState(false);
-
     const { carDetail, setCarDetail, user, setUser } = useStateContext() as IStateContext;
 
     useEffect(() => {
