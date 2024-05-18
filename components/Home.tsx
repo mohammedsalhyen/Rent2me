@@ -35,7 +35,7 @@ const Home = () => {
                 <Subscription  />
                 <About />
                 <Ad2 />
-                <FeatureCar />
+                <FeatureCar user={user}/>
                 <Contact />
                 <Tip />
                 <Footer />

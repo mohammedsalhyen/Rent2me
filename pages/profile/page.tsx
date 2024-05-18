@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { FaUserEdit, FaCamera } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { MdCircleNotifications } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { useStateContext, IStateContext } from '@/context/StateContext';
 import Loading from '@/components/Loading';
 import Notification1 from '@/components/Notification1';
@@ -14,6 +15,7 @@ import EditUser from '@/components/EditUser';
 import Requester from '@/components/Requester';
 import RejectedRequest from '@/components/RejectedRequest';
 import AcceptedRequest from '@/components/AcceptedRequest';
+import { handleUploadImage } from '@/utils/data';
 
 const fetchNotifications = async (userId: any) => {
     try {
@@ -28,7 +30,7 @@ const fetchNotifications = async (userId: any) => {
     }
 };
 
-const fetchUserImage = async (userId: any) => {
+export const fetchUserImage = async (userId: any) => {
     try {
         const response = await fetch(`http://rent2me.runasp.net/api/UserProfile/${userId}/image`);
         if (!response.ok) {
@@ -73,7 +75,9 @@ const page = () => {
     const router = useRouter();
     const [showNotification, setShowNotification] = useState(false);
     const [editClicked, setEditClicked] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [user, setUser]: any = useState();
+    const [propertyName, setPropertyName]: any = useState();
     const [photo, setPhoto] = useState(null);
     const NotificationRef: any = useRef(null);
     const [data, setData] = useState({ notifications: [], userImage: null, userCars: [] });
@@ -158,27 +162,94 @@ const page = () => {
                 </div>
                 <div className="content flex-center flex-col text-center">
                     <div className=' relative'>
-                        <div className='w-[250px] relative  border-2 border-[var(--orange-color)] overflow-hidden rounded-full '>
+                        <div className='w-[250px] h-[250px] relative  border-2 border-[var(--orange-color)] overflow-hidden rounded-full '>
                             <img className='w-full h-full' src={data.userImage !== null ? data.userImage : "../"} id="Photo" alt='profile' />
+                            
                         </div>
+                        <label className=' h-fit absolute z-30 left-1/2 -bottom-6 -translate-x-1/2'>
+                            <p className=" font-bold  text-4xl cursor-pointer" >
+                                <FaCamera />
+                            </p>
+                            <input
+                                type="file"
+                                name="upload"
+                                onChange={(e)=>handleUploadImage(e,user.nationalID)}
+                                className="h-0 w-0"
+                            />
+                        </label>
+                        
                     </div>
 
                     <div className="details">
-                        <section className="name">
-                            <div className=" text-[34px] font-bold text-[var(--blue-color)]">{user?.name}</div>
+                        <section className=" text-[34px] font-bold text-[var(--blue-color)] flex-center gap-2">
+                            <div >{user?.name}</div>
+                            {showEdit &&
+                                <>
+                                    <button type='button' onClick={() => { setEditClicked(true); setPropertyName("Name") }}><MdEdit /></button>
+                                    {editClicked &&
+                                        <div data-aos="zoom-in" className='bg-[#000000ad] fixed top-0 left-0 w-full h-full z-30 '>
+                                            <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
+                                                <EditUser user={user} setEditClicked={setEditClicked} propertyName={propertyName} />
+                                            </div>
+                                        </div>
+                                    }
+                                </>
+                            }
                         </section>
-                        <section className="email">
-                            <div id="mail" className="text-[22px] mt-3">{user?.mail}</div>
+                        <section className="text-[22px] mt-3 flex-center gap-2">
+                            <div>{user?.mail}</div>
+                            {showEdit &&
+                                <>
+                                    <button type='button' onClick={() => { setEditClicked(true); setPropertyName("Mail") }}><MdEdit /></button>
+                                    {editClicked &&
+                                        <div data-aos="zoom-in" className='bg-[#000000ad] fixed top-0 left-0 w-full h-full z-30 '>
+                                            <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
+                                                <EditUser user={user} setEditClicked={setEditClicked} propertyName={propertyName} />
+                                            </div>
+                                        </div>
+                                    }
+                                </>
+                            }
                         </section>
-                        <div className='flex-center xs:flex-col sm:flex-row gap-3 mt-10 text-white'>
-                            <div className=" bg-[#b7b7b7] p-2 rounded-lg">{user?.nationalID}</div>
-                            <div className="bg-[#b7b7b7] p-2 rounded-lg">{user?.address}</div>
-                            <div className="bg-[#b7b7b7] p-2 rounded-lg">{user?.phone}</div>
+                        <div className='flex-center xs:flex-col sm:flex-row gap-3 mt-10 text-white '>
+                            <div className=" bg-[#b7b7b7] p-2 rounded-lg">
+                                <p>{user?.nationalID}</p>
+                            </div>
+                            <div className="bg-[#b7b7b7] p-2 rounded-lg flex-center gap-2">
+                                {user?.address}
+                                {showEdit &&
+                                    <>
+                                        <button type='button' onClick={() => { setEditClicked(true); setPropertyName("Address") }}><MdEdit /></button>
+                                        {editClicked &&
+                                            <div data-aos="zoom-in" className='bg-[#000000ad] fixed top-0 left-0 w-full h-full z-30 '>
+                                                <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
+                                                    <EditUser user={user} setEditClicked={setEditClicked} propertyName={propertyName} />
+                                                </div>
+                                            </div>
+                                        }
+                                    </>
+                                }
+                            </div>
+                            <div className="bg-[#b7b7b7] p-2 rounded-lg flex-center gap-2">
+                                {user?.phone}
+                                {showEdit &&
+                                    <>
+                                        <button type='button' onClick={() => { setEditClicked(true); setPropertyName("Phone") }}><MdEdit /></button>
+                                        {editClicked &&
+                                            <div data-aos="zoom-in" className='bg-[#000000ad] fixed top-0 left-0 w-full h-full z-30 '>
+                                                <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
+                                                    <EditUser user={user} setEditClicked={setEditClicked} propertyName={propertyName} />
+                                                </div>
+                                            </div>
+                                        }
+                                    </>
+                                }
+                            </div>
                         </div>
                     </div>
                     <div className='text-white mt-5 mb-14 bg-[var(--orange-color)] rounded-3xl py-3  px-6 border-none flex-center gap-2 '>
                         <FaUserEdit />
-                        <button onClick={() => setEditClicked(true)}>Edit</button>
+                        <button onClick={() => setShowEdit(!showEdit)}>Edit</button>
                     </div>
                 </div>
                 <div className='main prop '>
@@ -207,13 +278,7 @@ const page = () => {
                     showNotification && <div ref={NotificationRef}> <Notification1 notifications={data.notifications} /></div>
                 }
             </div>
-            {editClicked &&
-                <div data-aos="zoom-in" className='bg-[#000000ad] absolute top-0 left-0 w-full h-full z-30 '>
-                    <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
-                        <EditUser user={user} setEditClicked={setEditClicked} />
-                    </div>
-                </div>
-            }
+
         </div>
     )
 }

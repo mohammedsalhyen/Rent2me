@@ -22,27 +22,6 @@ const page = () => {
         setter(e.target.value);
     };
 
-    {/*const handleLoginSubmit = async (event: any) => {
-        event.preventDefault();
-        try {
-            const query = userQuery(nationalID);
-            const userData = await client.fetch(query)
-                .then((dataArray) => {
-                    const data = dataArray[0];
-                    if (data._id === nationalID && data.password === password) {
-                        localStorage.setItem("user", JSON.stringify(data));
-                        setUser(data)
-                        console.log(user)
-                        router.push("/");
-                    } else {
-                        alert("password or national id is wrong")
-                    }
-                });
-        } catch (error) {
-            // Handle fetch error
-            console.error('Error:', error);
-        }
-    };*/}
     const handleLoginSubmit = async (event: any) => {
         event.preventDefault();
         const formData = {

@@ -8,7 +8,7 @@ import { CgDollar } from "react-icons/cg";
 import { useStateContext, IStateContext } from '@/context/StateContext';
 import { useRouter } from 'next/navigation';
 import Loading from './Loading';
-const Car = ({ car, index }: any) => {
+const Car = ({ car, index,user }: any) => {
     const router = useRouter();
     const { setCarDetail } = useStateContext() as IStateContext;
     const [carImage, setCarImage] = useState(null);
@@ -32,6 +32,28 @@ const Car = ({ car, index }: any) => {
 
         return () => clearTimeout(timeout);
     }, [car.licencePlate]);
+
+
+    const handleDelete = async (id:number) => {
+        try {
+            const response = await fetch(`http://rent2me.runasp.net/api/Car/RemoveCar/?license=${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert("Deleted");
+                router.refresh();
+            } else {
+                alert("false")
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+
+
+
+
     if (!carImage) {
         return <div className=''> <Loading text={"We are Loading Car..."} /> </div>; // Return loading indicator if car is not set yet
     }
@@ -70,15 +92,22 @@ const Car = ({ car, index }: any) => {
                         <CgDollar className='font-bold text-[24px] text-[var(--orange-color)]' />
                     </section>
                     <div>
-                        <button className='px-6 py-3 bg-[var(--orange-color)] rounded-3xl'
-                            onClick={() => {
-                                setCarDetail(car);
-                                router.push(`/car/${car.licencePlate}`)
-                                localStorage.setItem("carDetail", JSON.stringify(car));
-                            }
-                            }>
-                            Rent Now
-                        </button>
+                        {
+                            car.userID === user?.nationalID?
+                                <button className='px-6 py-3 bg-[#f00] rounded-3xl'
+                                    onClick={() => handleDelete(car.licencePlate)}>
+                                    Remove
+                                </button> :
+                                <button className='px-6 py-3 bg-[var(--orange-color)] rounded-3xl'
+                                    onClick={() => {
+                                        setCarDetail(car);
+                                        router.push(`/car/${car.licencePlate}`)
+                                        localStorage.setItem("carDetail", JSON.stringify(car));
+                                    }
+                                    }>
+                                    Rent Now
+                                </button>
+                        }
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Car from './Car';
 
-const FeatureCar = () => {
+const FeatureCar = ({user}:any) => {
     const [cars, setCars] = useState([]);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const FeatureCar = () => {
                 </div>
                 <div className=" grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     {cars.map((car: any, index: number) => (
-                        <Car car={car} key={index} />
+                        <Car car={car} key={index} user={user}/>
                     ))}
                 </div>
             </div>
