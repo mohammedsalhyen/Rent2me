@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import ContarctUi from './CotractUi';
 const Notification1 = ({ notifications }: any) => {
   const [show, setShow] = useState(false);
   console.log(notifications)
@@ -54,7 +53,6 @@ const Notification1 = ({ notifications }: any) => {
           {show &&
             <div data-aos="zoom-in" className='bg-[#000000ad] fixed top-0 left-0 w-full h-full z-30 '>
               <div className=' font-normal absolute py-10 px-5 rounded-3xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white z-50'>
-                <ContarctUi setShow={setShow} />
               </div>
             </div>
           }

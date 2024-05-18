@@ -11,7 +11,6 @@ import Subscription from './Subscription'
 import Tip from './Tip'
 import Cart from './Cart'
 import {IStateContext, useStateContext } from '@/context/StateContext'
-import ContarctUi from './CotractUi'
 
 const Home = () => {
     const { user, setUser} = useStateContext() as IStateContext;
