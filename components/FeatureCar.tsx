@@ -13,7 +13,6 @@ const FeatureCar = ({user}:any) => {
                 
                     const data = await response.json();
                     setCars(data)
-                    console.log(cars)
             } catch (error) {
                 console.error('Error fetching data:', error);
                 
@@ -21,10 +20,9 @@ const FeatureCar = ({user}:any) => {
         };
 
         fetchCar();
-        console.log(cars)
+
 
     }, []);
-    console.log(cars)
     return (
         <div className="bg-[var(--dark-gray-color)] main-prop padding-container">
             <div className="max-container" id='car-gallery'>

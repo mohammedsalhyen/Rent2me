@@ -11,6 +11,7 @@ import Subscription from './Subscription'
 import Tip from './Tip'
 import Cart from './Cart'
 import {IStateContext, useStateContext } from '@/context/StateContext'
+import App from './App'
 
 const Home = () => {
     const { user, setUser} = useStateContext() as IStateContext;
@@ -38,6 +39,7 @@ const Home = () => {
                 <Contact />
                 <Tip />
                 <Footer />
+                <App/>
             </div>
             <Cart/>
         </div>
