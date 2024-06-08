@@ -173,7 +173,7 @@ const page = () => {
                             <input
                                 type="file"
                                 name="upload"
-                                onChange={(e)=>handleUploadImage(e,user.nationalID)}
+                                onChange={(e)=>{handleUploadImage(e,user.nationalID)}}
                                 className="h-0 w-0"
                             />
                         </label>

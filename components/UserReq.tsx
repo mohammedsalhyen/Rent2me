@@ -18,6 +18,7 @@ const UserReq = ({ user }: any) => {
             try {
                 const queryParams = new URLSearchParams();
                 queryParams.append('nationalId', user.nationalID);
+                queryParams.append('status', 2 as unknown as string);
                 const queryString = queryParams.toString();
 
                 const response = await fetch(`http://rent2me.runasp.net/api/UserProfile/DisplayUserRequests?${queryString}`);

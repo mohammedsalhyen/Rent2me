@@ -1,3 +1,4 @@
+import getStripe from '@/lib/getStripe';
 import React, { useEffect, useState } from 'react'
 import { IoIosCheckmarkCircle } from "react-icons/io";
 const Notification1 = ({ notifications }: any) => {
@@ -20,6 +21,20 @@ const Notification1 = ({ notifications }: any) => {
       console.error('Error:', error);
     }
   }
+
+  const handleCheckout = async () => {
+    const carData=[{name:"Renting Car",price:700}]
+    const stripe = await getStripe();
+    const response = await fetch('/api/route', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(carData),
+    });
+    const data = await response.json();
+    stripe.redirectToCheckout({ sessionId: data.id });
+}
   return (
     <div className=' absolute top-24  right-0 z-40 bg-white w-96   rounded-lg m-h-full max-h-screen'>
       <div className=' flex items-center justify-between text-xl px-2 py-7 font-bold border-b-2 pb-2'>
@@ -35,7 +50,7 @@ const Notification1 = ({ notifications }: any) => {
             {
               notification.message === "Your rental request has been accepted,see requests for more details." ?
                 <button className='py-2 px-3 rounded-3xl bg-[var(--blue-color)] text-white'
-                  onClick={() => setShow(true)}
+                  onClick={handleCheckout}
                 >Pay Now</button> : ""
             }
             <button type='button'

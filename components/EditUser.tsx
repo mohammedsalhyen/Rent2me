@@ -29,7 +29,7 @@ const EditUser = ({ user, setEditClicked ,propertyName}: any) => {
                 const responseData = await response.json();
                 console.log('Sendding successful:', responseData);
                 fetchUser(user.nationalID);
-                router.refresh();
+                
             } else {
                 console.error('sending failed:', response.statusText);
                 alert("false");
@@ -44,6 +44,7 @@ const EditUser = ({ user, setEditClicked ,propertyName}: any) => {
         } catch (error) {
             console.error('Error:', error);
         }
+        router.refresh();
     };
     return (
         <form onSubmit={handleSubmit} className=' relative px-10 xs:w-[300px] md:w-[700px]'>

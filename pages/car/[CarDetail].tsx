@@ -79,7 +79,7 @@ const CarDetail = () => {
     }, [carDetail]);
     const handleDownload = async () => {
         try {
-            const response = await fetch('http://rent2me.runasp.net/api/Contract/contract/?requestId=1');
+            const response = await fetch('http://rent2me.runasp.net/api/Contract/SystemContract/?contractId=1');
             const blob = await response.blob();
             const url = window.URL.createObjectURL(new Blob([blob]));
             // Create a temporary link element to trigger the download
@@ -163,7 +163,7 @@ const CarDetail = () => {
                                     }
                                 </div>
                                 <form className='flex items-center my-10 gap-x-5 w-full'
-                                    onSubmit={(e) => { handleFeedBack(e, message, user.nationalID, carDetail.userrID, carDetail.licencePlate); router.refresh(); }}
+                                    onSubmit={(e) => { handleFeedBack(e, message, user.nationalID, carDetail.userrID, carDetail.licencePlate) }}
                                 >
                                     <div className=' h-[40px] w-[40px] border-[1px] rounded-full p-1'>
                                         <Link href="/profile/page">

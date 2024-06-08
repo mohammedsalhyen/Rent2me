@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import About from './About'
 import Ad from './Ad'
 import Ad2 from './Ad2'
@@ -10,16 +10,17 @@ import Landing from './Landing'
 import Subscription from './Subscription'
 import Tip from './Tip'
 import Cart from './Cart'
-import {IStateContext, useStateContext } from '@/context/StateContext'
-import App from './App'
+import { IStateContext, useStateContext } from '@/context/StateContext'
+import Test from './Test'
 
 const Home = () => {
-    const { user, setUser} = useStateContext() as IStateContext;
+
+    const { user, setUser } = useStateContext() as IStateContext;
     useEffect(() => {
         // Function to get data from local storage
         const getDataFromLocalStorage = () => {
             const userJson = localStorage.getItem('user');
-            if ( !user &&userJson !== null) {
+            if (!user && userJson !== null) {
                 const localStorageData = JSON.parse(userJson);
                 setUser(localStorageData);
             }
@@ -30,18 +31,18 @@ const Home = () => {
     return (
         <div>
             <div className=' relative' >
+                <Test/>
                 <Landing />
                 <Ad />
-                <Subscription  />
+                <Subscription />
                 <About />
                 <Ad2 />
-                <FeatureCar user={user}/>
+                <FeatureCar user={user} />
                 <Contact />
                 <Tip />
                 <Footer />
-                <App/>
             </div>
-            <Cart/>
+            <Cart />
         </div>
     )
 }

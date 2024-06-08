@@ -1,17 +1,6 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_rentAmount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_depositAmount",
-				"type": "uint256"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -30,20 +19,19 @@
 	},
 	{
 		"inputs": [],
-		"name": "destroyContract",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "endRental",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_depositAmount",
+				"type": "uint256"
+			}
+		],
 		"name": "refundDeposit",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -108,8 +96,39 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "returnCar",
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_licencePlate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_ownerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_renterId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_duration",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_place",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_rentalFee",
+				"type": "uint256"
+			}
+		],
+		"name": "rentVehicle",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -122,36 +141,78 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "withdrawRent",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "carReturned",
-		"outputs": [
+		"anonymous": false,
+		"inputs": [
 			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "depositAmount",
-		"outputs": [
-			{
+				"indexed": true,
 				"internalType": "uint256",
-				"name": "",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "licencePlate",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "ownerId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "renterId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "duration",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "place",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "rentalFee",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"name": "VehicleRented",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "VehicleReturned",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_rentAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawRent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -195,24 +256,55 @@
 	},
 	{
 		"inputs": [],
-		"name": "rentalPaid",
+		"name": "rentalAgreementCount",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "rentAmount",
-		"outputs": [
+		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "rentalAgreements",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "licencePlate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "ownerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "renterId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "place",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "rentalFee",
 				"type": "uint256"
 			}
 		],
@@ -240,19 +332,6 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "state",
-		"outputs": [
-			{
-				"internalType": "enum Rent2Me.State",
-				"name": "",
-				"type": "uint8"
 			}
 		],
 		"stateMutability": "view",

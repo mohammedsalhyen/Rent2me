@@ -56,7 +56,7 @@ const AcceptedRequest = ({ user }: any) => {
     return (
         <div className='main-prop border-t-2 border-[#DDD]'>
             <div>
-                <p className='text-3xl text-green-600 font-semibold mb-10'>Your Rejected Requests</p>
+                <p className='text-3xl text-green-600 font-semibold mb-10'>Your Accepted Requests</p>
             </div>
             {requests.length === 0 ? (
                 <div className=' w-full my-10 flex-center flex-col'>
